@@ -1,0 +1,16 @@
+model: 'resnet18'
+weights: 'imagenet'
+device: 'cuda'
+
+path-to-dataset: 'UTKFace_Dataset/'
+save-models-path: 'models/'
+img-size: 224
+
+
+learning-rate: 0.001
+momentum: 0.9
+
+batch-size: 64
+epochs: 20
+patience: 5
+
