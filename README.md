@@ -26,4 +26,4 @@
 
     
 Запуск кода
-python infer.py --model resnet18 --weights path-to-model --source path-to-img-dir-video --imgsz 224 --save_path path-to-save-results
+* python infer.py --model resnet18 --weights path-to-model --source path-to-img-dir-video --imgsz 224 --save_path path-to-save-results
