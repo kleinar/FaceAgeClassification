@@ -1,5 +1,17 @@
 # Human age classification 
 
 ![Image alt](https://github.com/kleinar/FaceAgeClassification/raw/master/misc/group.jpg)
-![Video alt](https://github.com/kleinar/FaceAgeClassification/raw/master/misc/face.mp4)
+
+# Train age classification
+
+1. Скачать датасет по лицам по ссылке (тут ссылку)
+2. Закинуть папку с датасетом в корень проекта
+3. Зайти в config файл и прописать путь к датасету.
+   Например: path-to-dataset: 'UTKFace_Dataset/'
+4. В конфиг файле прописать параметры которые вы хотите написать.
+   4.1 Есть возможность выбрать разные предобученные нейросети: resnet18, resnet34 и так далее.
+   4.2 Поменять размер входного изображения для классификатора возраста людей
+   4.3 Производить обучение на гпу или цпу и так далее
+5. Запустить train.py
+
 
