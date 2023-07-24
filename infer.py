@@ -5,8 +5,7 @@ import numpy as np
 import torch
 
 from utils.model import AgeClassificator, FaceDetection
-from utils.datasets import img_to_tensor
-from utils.general import  visualize_image
+from utils.general import  visualize_image, img_to_tensor
 
 def parse_opt():
     parser = argparse.ArgumentParser()

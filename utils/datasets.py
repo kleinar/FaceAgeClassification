@@ -1,10 +1,10 @@
 import cv2
 import albumentations as A
-import numpy as np
+import os
+
 from albumentations.pytorch import ToTensor
 from torch.utils.data import DataLoader
-import os
-import torch
+
 
 class AgeDataset(DataLoader):
     '''
@@ -48,9 +48,9 @@ def train_val_test_dataloader(dataset_path:str = '', img_size:int = 224, batch_s
     :param test_list: list of images name for test
 
     :return: train, validation and test Dataloaders
-
-    Train Dataloaders
     '''
+
+    #Train Dataloaders
     train_transforms = A.Compose([
         A.Resize(img_size, img_size),
         A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))])
@@ -66,9 +66,8 @@ def train_val_test_dataloader(dataset_path:str = '', img_size:int = 224, batch_s
         shuffle=True,
     )
 
-    '''
-    Validation Dataloaders
-    '''
+
+    #Validation Dataloaders
     val_transforms = A.Compose([
         A.Resize(img_size, img_size),
         A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))])
@@ -84,9 +83,7 @@ def train_val_test_dataloader(dataset_path:str = '', img_size:int = 224, batch_s
         shuffle=True,
     )
 
-    '''
-    Test Dataloaders
-    '''
+    #Test Dataloaders
     test_transforms = A.Compose([
         A.Resize(img_size, img_size),
         A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))])
@@ -103,11 +100,3 @@ def train_val_test_dataloader(dataset_path:str = '', img_size:int = 224, batch_s
     )
 
     return train_loader, val_loader, test_loader
-
-def img_to_tensor(img:np.array, img_size:int):
-    test_transforms = A.Compose([
-        A.Resize(img_size, img_size),
-        A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))])
-    result = test_transforms(image = img)
-    result = ToTensor()(image=result['image'])['image']
-    return torch.unsqueeze(result, 0)
