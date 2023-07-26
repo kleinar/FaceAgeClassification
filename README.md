@@ -1,32 +1,38 @@
+# Start
+
+git clone ...
+pip install - r requirements.txt
+
+
 # Human age classification 
 
 ![Image alt](https://github.com/kleinar/FaceAgeClassification/raw/master/misc/group.jpg)
 
 # Train age classification
 
-1. Скачать датасет по лицам по ссылке (тут ссылку)
-2. Закинуть папку с датасетом в корень проекта
-3. Зайти в config файл и прописать путь к датасету.
-   Например: path-to-dataset: 'UTKFace_Dataset/'
-4. В конфиг файле прописать параметры которые вы хотите написать.
-   * 4.1. Есть возможность выбрать разные предобученные нейросети: resnet18, resnet34 и так далее.
-   * 4.2. Поменять размер входного изображения для классификатора возраста людей
-   * 4.3. Производить обучение на гпу или цпу и так далее
-6. Запустить train.py
-
+1. Download face dataset
+2. Drop the folder with the dataset in the root of the project
+3. Go to the config file and set the path to the dataset.
+    For example: path-to-dataset: 'UTKFace_Dataset/'
+4. In the config file, write the parameters that you want to write.
+    * 4.1. It is possible to choose different pre-trained neural networks: resnet18, resnet34 and so on.
+    * 4.2. Resize input image for people age classifier
+    * 4.3. Perform training on GPU or CPU and so on
+6. Run train.py
+   
 # Inference
 
-1. После обучения вы получите best_model.pt в файле, в котором вы прописали в конфиге.
-2. выберите модель, которую вы использовали как предобученную
-3. пропишите путь к весам вашей нейросети
-4. выберите, на чем хотите проверить ваш результат. На отдельном изображении, в папке из изображении или видео
-5.  пропишите размер входного изображения как во время обучения
-6.  Напишите, где хотите сохранять результаты
+1. After training, you will receive best_model.pt in the file in which you registered in the config.
+2. select the model you used as pre-trained
+3. write the path to the weights of your neural network
+4. Choose what you want to test your result on. On a separate image, in a folder from an image or video
+5. write down the size of the input image as during training
+6. Write where you want to save the results
 
 
     
-Запуск кода
-* python infer.py --model resnet18 --weights path-to-model --source path-to-img-dir-video --imgsz 224 --save_path path-to-save-results
+Run code
+* python infer.py
 
 # Tensorboard
 tensorboard --logdir=path-to-checkpoint --host=127.0.0.1
