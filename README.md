@@ -1,12 +1,12 @@
+# Human age classification 
+
+![Image alt](https://github.com/kleinar/FaceAgeClassification/raw/master/misc/group.jpg)
+
 # Start
 
 * git clone ...
 * pip install - r requirements.txt
-
-
-# Human age classification 
-
-![Image alt](https://github.com/kleinar/FaceAgeClassification/raw/master/misc/group.jpg)
+  
 
 # Train age classification
 
