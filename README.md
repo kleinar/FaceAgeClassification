@@ -1,7 +1,7 @@
 # Start
 
-git clone ...
-pip install - r requirements.txt
+* git clone ...
+* pip install - r requirements.txt
 
 
 # Human age classification 
