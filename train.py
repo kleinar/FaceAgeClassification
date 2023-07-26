@@ -11,17 +11,19 @@ from torch.utils.tensorboard import SummaryWriter
 
 from utils.model import AgeClassificator
 from utils.datasets import train_val_test_dataloader
-from utils.general import  calculate_metric
+from utils.general import  calculate_metric, create_folder_if_not_exists
+
 
 def main():
     with open("config.yaml", "r") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
+    create_folder_if_not_exists(config['save-models-path'])
 
     all_images = os.listdir(config['path-to-dataset'])
     train, test = train_test_split(all_images, train_size=0.7)
     test, val = train_test_split(test, train_size=0.5)
 
-    model = AgeClassificator(model_name=config['model'], pretrained=config['weights'])
+    model = AgeClassificator(model_name=config['model'], pretrained=config['pretrained'])
     device = torch.device(config['device'])
     model = model.to(device)
     criterion = torch.nn.L1Loss()

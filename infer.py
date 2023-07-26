@@ -3,37 +3,34 @@ import cv2
 import os
 import numpy as np
 import torch
-
+import yaml
 from utils.model import AgeClassificator, FaceDetection
-from utils.general import  visualize_image, img_to_tensor
+from utils.general import visualize_image, img_to_tensor, create_folder_if_not_exists
 
-def parse_opt():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--model', nargs='+', type=str, default='resnet18', help='pretrained model name')
-    parser.add_argument('--weights', nargs='+', type=str, default='models/best_model.pt', help='model path')
-    parser.add_argument('--source', type=str, default= '1', help='file/dir/video')
-    parser.add_argument('--imgsz', type=list, default=224, help='224 or 512')
-    parser.add_argument('--save_path', nargs='+', type=str, default='output/', help='save results path')
 
-    opt = parser.parse_args()
-    return opt
+with open("config.yaml", "r") as file:
+    config = yaml.load(file, Loader=yaml.FullLoader)
 
-def main(opt):
-    face_detector = FaceDetection()
-    age_classificator = AgeClassificator(model_name=opt.model)
-    age_classificator.load_state_dict(torch.load(opt.weights))
+face_detector = FaceDetection()
+age_classificator = AgeClassificator(model_name=config['model'])
+age_classificator.load_state_dict(torch.load(config['weights']))
 
-    if opt.source.endswith(('.png', '.jpg')):
-        img = cv2.imread(opt.source)
+def inference(source:str = '', mode:str = 'infer'):
+    if mode == 'infer':
+        source = config['source-path']
+    create_folder_if_not_exists(config['save-results-path'])
+    if source.endswith(('.png', '.jpg')):
+        img = cv2.imread(source)
         img = infer_image(img, face_detector, age_classificator)
-        cv2.imwrite(opt.save_path + opt.source, img)
-    elif opt.source.endswith(('.avi', '.mp4')):
-        cap = cv2.VideoCapture(opt.source)
+        source = source.split('/')[-1]
+        cv2.imwrite(config['save-results-path'] + source, img)
+    elif source.endswith(('.avi', '.mp4')):
+        cap = cv2.VideoCapture(config['source-path'])
         frame_width = int(cap.get(3))
         frame_height = int(cap.get(4))
 
         size = (frame_width, frame_height)
-        result = cv2.VideoWriter(opt.save_path + opt.source,
+        result = cv2.VideoWriter(config['save-results-path'] + source,
                                  cv2.VideoWriter_fourcc(*'MJPG'),
                                  10, size)
         if not cap.isOpened():
@@ -52,24 +49,23 @@ def main(opt):
         cap.release()
         result.release()
 
-    elif opt.source.endswith(''):
-        image_list = os.listdir(opt.source)
+    elif source.endswith(''):
+        image_list = os.listdir(source)
         for img_name in image_list:
-            img = cv2.imread(opt.source + img_name)
+            img = cv2.imread(source + img_name)
             img = infer_image(img, face_detector, age_classificator)
-            cv2.imwrite(opt.save_path + img_name, img)
+            cv2.imwrite(config['save-results-path'] + img_name, img)
 
 
 def infer_image(img:np.array, face_detector: FaceDetection, age_classificator: AgeClassificator):
     faces = face_detector.detect(img)
     for (x, y, w, h) in faces:
         face = img[y:y + h, x:x + w]
-        face = img_to_tensor(face, opt.imgsz)
+        face = img_to_tensor(face, config['img-size'])
         face_age = age_classificator(face).cpu().detach().numpy()[0]
         img = visualize_image(img, (x, y, x + w, y + h), face_age)
     return img
 
 
 if __name__ == '__main__':
-    opt = parse_opt()
-    main(opt)
+    inference()

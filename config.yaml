@@ -1,9 +1,12 @@
 model: 'resnet18'
-weights: 'imagenet'
+pretrained: 'imagenet'
+weights: 'models/best_model.pt'
 device: 'cuda'
 
 path-to-dataset: 'UTKFace_Dataset/'
 save-models-path: 'models/'
+save-results-path: 'output/'
+source-path: 'misc/'
 img-size: 224
 
 

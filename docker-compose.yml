@@ -1,0 +1,36 @@
+version: "3.7"
+
+services:
+
+  app:
+    restart: on-failure
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./:/usr/src/fastapi
+    ports:
+      - 8080:8080
+    networks:
+      - live
+
+  nginx:
+    image: "nginx:stable-perl"
+    restart: unless-stopped
+    ulimits:
+      nproc: 20000
+      nofile:
+        soft: 20000
+        hard: 40000
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+    networks:
+      - live
+
+networks:
+  live:
